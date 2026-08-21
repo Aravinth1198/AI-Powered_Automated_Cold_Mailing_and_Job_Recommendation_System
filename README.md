@@ -71,3 +71,69 @@ uplload_details_database()
 predict_match()
 recommend_job()
 ```
+
+
+## 6. Requirement Analysis
+
+### 6.1 Functional Requirements
+
+The system should:
+*  User information input through Tkinter
+*  User input validation
+*	 Store user information
+*	 Maintain job database
+*	 Retrieve available jobs
+*	 ML-based job recommendation
+*	 Calculate and rank match scores
+*	 Apply matching threshold
+*	 Support multiple matching jobs
+*	 Retrieve HR/recruiter information
+*	 Send matched-job data to n8n
+*	 Process multiple jobs in n8n
+*	 Generate emails using Gemini
+*	 Personalize emails for each job
+*	 Automatically send emails
+*	 Track email status
+*	 Prevent duplicate emails
+*	 Handle system/API/email errors
+*	 Display recommended jobs
+*	 Display final mailing summary
+
+### 6.2 Non-Functional Requirements
+
+The application should be:
+
+* User-friendly
+* Easy to understand
+* Fast in generating recommendation
+* Reliable
+* Maintainable
+* Scalable
+* Secure with respect to applicant data
+* Easy to test
+
+### 6.3 User Requirement
+
+The user should be able to:
+
+* Enter applicant information.
+* Validate the information for analysis.
+* Calculate the threshold value.
+* Job similarity calculation.
+* Select the job for applicant.
+* Send mail to the recruiter.
+
+### 6.4 Identify System Inputs
+
+The initial system can use:
+
+* Applicant Name
+* Applicant Email
+* Applicant Phone
+* Applicant Skills
+* Applicant Education
+* Applicant Experience
+* Applicant Preferred Job Role
+* Applicant Preferred Location
+
+
