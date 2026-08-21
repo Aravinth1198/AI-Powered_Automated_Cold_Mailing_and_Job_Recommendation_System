@@ -9,7 +9,7 @@
 * It then uses n8n automation and Gemini AI to generate and send personalized cold emails to the HR contacts of all matching jobs.
   
 
-## 2. Proposed Solution
+## 3. Proposed Solution
 
 * Collect user information such as skills, education, experience, and preferred job role.
 * Validate and process the entered user data.
@@ -21,7 +21,7 @@
 * Display job recommendations and mailing status through a user-friendly Tkinter interface.
 
 
-## 3. Process Flow
+## 4. Process Flow
 
 ```text
      Start
@@ -45,7 +45,7 @@
 ```
 
 
-## 4. Project Mapping
+## 5. Project Mapping
 
 | V-Model Stage        |        Auotomatic Job Recommendation Project           |
 | -------------------- | -----------------------------------------------------  |
@@ -60,7 +60,7 @@
 | Demonstration        | Verify that the system satisfies project objectives    |
 
 
-## 5. Project - Modular Application Development
+## 6. Project - Modular Application Development
 
 Create separate functions:
 
@@ -73,9 +73,9 @@ recommend_job()
 ```
 
 
-## 6. Requirement Analysis
+## 7. Requirement Analysis
 
-### 6.1 Functional Requirements
+### 7.1 Functional Requirements
 
 The system should:
 *  User information input through Tkinter
@@ -99,7 +99,7 @@ The system should:
 *	 Display recommended jobs
 *	 Display final mailing summary
 
-### 6.2 Non-Functional Requirements
+### 7.2 Non-Functional Requirements
 
 The application should be:
 
@@ -112,7 +112,7 @@ The application should be:
 * Secure with respect to applicant data
 * Easy to test
 
-### 6.3 User Requirement
+### 7.3 User Requirement
 
 The user should be able to:
 
@@ -123,7 +123,7 @@ The user should be able to:
 * Select the job for applicant.
 * Send mail to the recruiter.
 
-### 6.4 Identify System Inputs
+### 7.4 Identify System Inputs
 
 The initial system can use:
 
@@ -136,5 +136,72 @@ The initial system can use:
 * Applicant Preferred Job Role
 * Applicant Preferred Location
 
-### 6.5 
+### 7.5 System Output
+
+* Input Validation Output
+* Job Recommendation Output
+* Job Matching Output
+* HR Information Output
+* n8n Workflow Output
+* Gemini AI Output
+* Email Sending Output
+
+
+## 8. From Requirements to System Design
+
+### 8.1 Inputs
+
+* Student ID
+* Student Name
+* Attendance %
+* Study Hours
+* Internal Marks
+* Assignment Completion %
+* Previous Academic Performance
+
+### 8.2 Processing
+
+* Validate input
+* Preprocess data
+* Send data to ML model
+* Generate prediction
+* Generate recommendation
+
+### 8.3 Outputs
+
+* Predicted performance
+* Performance category
+* Risk level
+* Recommendation
+
+## 9. Proposed System Architecture
+
+```text
+Tkinter UI
+     ↓
+Applicant Data Entry
+     ↓
+Input Validation
+     ↓
+Data Processing
+     ↓
+ML Prediction Engine
+     ↓
+Matching job Prediction
+     ↓
+Result + AI Recommendation
+```
+### Architecture Components
+
+* **Tkinter UI** - Provides the Job seeker data entry interface.
+* **Input Validation** - Checks whether the entered user inputs are valid.
+* **Data Processing** - Prepares the data for the ML model.
+* **ML Prediction Engine** - Predicts job that matches threshold value.
+* **Result + AI Recommendation** - Displays the prediction and recommend the job.
+
+
+ 
+
+
+  
 
