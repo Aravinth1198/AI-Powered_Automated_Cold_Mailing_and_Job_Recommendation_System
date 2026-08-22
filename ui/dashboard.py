@@ -148,14 +148,14 @@ class DashboardPage(tk.Frame):
         
         row += 1
         
-        # Find Jobs button
+        # Find Jobs button - FIX: Use lambda to pass user_data
         find_jobs_btn = tk.Button(
             details_frame,
             text="Find Matching Jobs",
             font=("Arial", 14, "bold"),
             bg='#27ae60',
             fg='white',
-            command=self.on_profile_complete,
+            command=lambda: self.on_profile_complete(self.user_data),  # FIXED
             cursor="hand2",
             padx=30,
             pady=10
@@ -244,7 +244,7 @@ class DashboardPage(tk.Frame):
         self.skills_text = tk.Text(scrollable_frame, height=5, width=40, font=("Arial", 11))
         self.skills_text.pack(pady=5)
         
-        # Save button
+        # Save button - FIX: Use lambda to pass user_data
         save_btn = tk.Button(
             scrollable_frame,
             text="Save Profile",
@@ -312,5 +312,5 @@ class DashboardPage(tk.Frame):
         
         messagebox.showinfo("Success", "Profile saved successfully!")
         
-        # Trigger job matching
-        self.on_profile_complete(self.user_data)
+        # Trigger job matching - FIX: Pass user_data
+        self.on_profile_complete(self.user_data)  # This is already correct

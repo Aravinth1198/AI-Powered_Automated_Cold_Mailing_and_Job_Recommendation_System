@@ -2,14 +2,19 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 import pandas as pd
 import os
-from models.model_trainer import ModelTrainer
-from integration.n8n_integration import N8NIntegration
+import sys
+
+# Add project root to Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+from models.prediction_service import PredictionService
 
 class JobMatchingPage(tk.Frame):
     def __init__(self, parent, user_data, on_back):
         super().__init__(parent, bg='#f0f0f0')
         self.user_data = user_data
         self.on_back = on_back
+        self.prediction_service = PredictionService()
         
         self.setup_ui()
         self.load_matching_jobs()
@@ -30,7 +35,7 @@ class JobMatchingPage(tk.Frame):
         # Back button
         back_btn = tk.Button(
             header_frame,
-            text="← Back to Dashboard",
+            text="← Back",
             font=("Arial", 11),
             bg='#3498db',
             fg='white',
@@ -39,49 +44,89 @@ class JobMatchingPage(tk.Frame):
         )
         back_btn.pack(side="right", padx=30)
         
-        # Loading indicator
-        self.loading_label = tk.Label(
+        # Status label
+        self.status_label = tk.Label(
             self,
-            text="Finding matching jobs...",
-            font=("Arial", 14),
-            bg='#f0f0f0'
+            text="Loading model...",
+            font=("Arial", 12),
+            bg='#f0f0f0',
+            fg='#e67e22'
         )
-        self.loading_label.pack(pady=50)
+        self.status_label.pack(pady=10)
         
         # Jobs frame
         self.jobs_frame = tk.Frame(self, bg='#f0f0f0')
         self.jobs_frame.pack(fill="both", expand=True, padx=30, pady=20)
+
     
     def load_matching_jobs(self):
-        """Load and display matching jobs using ML models"""
-        # Use the best model to predict matching jobs
-        model_trainer = ModelTrainer()
+
+        """Load matching jobs using the saved model"""
+        try:
+            # Update status
+            self.status_label.config(
+            text="Loading jobs data...",
+            fg='#e67e22'
+            )
+            self.update_idletasks()
         
-        # Train all models and get the best one
-        best_model, best_accuracy, matching_jobs = model_trainer.train_and_predict(
-            self.user_data
-        )
+            # Load jobs data
+            jobs_file = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'data', 'jobs.xlsx')
         
-        # Update loading label
-        self.loading_label.config(
-            text=f"Best Model: {best_model} (Accuracy: {best_accuracy:.2f}%)",
-            font=("Arial", 12, "bold"),
-            fg='#27ae60'
-        )
+            if not os.path.exists(jobs_file):
+                self.status_label.config(
+                text="Jobs data not found!",
+                fg='#e74c3c'
+                )
+                return
         
-        # Display matching jobs
-        self.display_jobs(matching_jobs)
+            jobs_df = pd.read_excel(jobs_file)
         
-        # Send to n8n for processing
-        self.process_with_n8n(matching_jobs)
+            # Update status
+            self.status_label.config(
+            text="Running prediction model...",
+            fg='#e67e22'
+            )
+            self.update_idletasks()
+        
+        # Get predictions
+            matching_jobs = self.prediction_service.predict_jobs(
+                 self.user_data,
+                 jobs_df,
+                 top_n=20
+            )
+        
+            if not matching_jobs.empty:
+                self.status_label.config(
+                text=f"✓ Found {len(matching_jobs)} matching jobs",
+                fg='#27ae60'
+            )
+            else:
+                self.status_label.config(
+                text="No matching jobs found for your profile",
+                fg='#e67e22'
+                )
+        
+            self.display_jobs(matching_jobs)
+        
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            print(f"Error in load_matching_jobs: {error_details}")
+        
+            self.status_label.config(
+            text=f"Error: {str(e)}",
+            fg='#e74c3c'
+            )
+        
+            messagebox.showerror("Error", f"Failed to load matching jobs:\n{str(e)}")
     
     def display_jobs(self, jobs):
-        """Display matching jobs in the UI"""
-        # Clear previous jobs
+        """Display matching jobs"""
         for widget in self.jobs_frame.winfo_children():
             widget.destroy()
         
-        if not jobs:
+        if jobs.empty:
             tk.Label(
                 self.jobs_frame,
                 text="No matching jobs found",
@@ -90,14 +135,7 @@ class JobMatchingPage(tk.Frame):
             ).pack(pady=20)
             return
         
-        tk.Label(
-            self.jobs_frame,
-            text=f"Found {len(jobs)} matching jobs:",
-            font=("Arial", 14, "bold"),
-            bg='#f0f0f0'
-        ).pack(pady=10)
-        
-        # Create scrollable frame for jobs
+        # Scrollable frame
         canvas = tk.Canvas(self.jobs_frame, bg='#f0f0f0')
         scrollbar = ttk.Scrollbar(self.jobs_frame, orient="vertical", command=canvas.yview)
         scrollable_frame = tk.Frame(canvas, bg='#f0f0f0')
@@ -113,25 +151,31 @@ class JobMatchingPage(tk.Frame):
         canvas.pack(side="left", fill="both", expand=True)
         scrollbar.pack(side="right", fill="y")
         
-        # Display each job
-        for i, (_, job) in enumerate(jobs.iterrows()):
-            job_frame = tk.Frame(
-                scrollable_frame,
-                bg='white',
-                relief="solid",
-                borderwidth=1
-            )
+        # Display jobs
+        for i, (_, job) in enumerate(jobs.iterrows(), 1):
+            job_frame = tk.Frame(scrollable_frame, bg='white', relief="solid", borderwidth=1)
             job_frame.pack(fill="x", padx=20, pady=5)
             
-            # Job title
+            # Job title and company
+            header = tk.Frame(job_frame, bg='white')
+            header.pack(fill="x", padx=15, pady=(10, 5))
+            
             tk.Label(
-                job_frame,
-                text=job.get('job_title', 'N/A'),
+                header,
+                text=f"{i}. {job.get('job_title', 'N/A')}",
                 font=("Arial", 13, "bold"),
                 bg='white'
-            ).pack(anchor="w", padx=15, pady=(10, 5))
+            ).pack(side="left")
             
-            # Company
+            match_score = job.get('match_probability', 0) * 100
+            tk.Label(
+                header,
+                text=f"Match: {match_score:.1f}%",
+                font=("Arial", 12, "bold"),
+                bg='white',
+                fg='#27ae60' if match_score > 70 else '#f39c12'
+            ).pack(side="right")
+            
             tk.Label(
                 job_frame,
                 text=f"Company: {job.get('company', 'N/A')}",
@@ -139,22 +183,12 @@ class JobMatchingPage(tk.Frame):
                 bg='white'
             ).pack(anchor="w", padx=15)
             
-            # Domain
             tk.Label(
                 job_frame,
                 text=f"Domain: {job.get('domain', 'N/A')}",
                 font=("Arial", 11),
                 bg='white',
                 fg='#7f8c8d'
-            ).pack(anchor="w", padx=15)
-            
-            # Skills match
-            tk.Label(
-                job_frame,
-                text=f"Required Skills: {job.get('required_skills', 'N/A')}",
-                font=("Arial", 10),
-                bg='white',
-                fg='#34495e'
             ).pack(anchor="w", padx=15)
             
             # Apply button
@@ -170,21 +204,10 @@ class JobMatchingPage(tk.Frame):
             apply_btn.pack(anchor="w", padx=15, pady=10)
     
     def apply_to_job(self, job):
-        """Apply to a specific job"""
+        """Apply to a job"""
         messagebox.showinfo(
             "Application Submitted",
-            f"Your application for {job.get('job_title', 'this position')} "
-            f"at {job.get('company', 'the company')} has been submitted!"
+            f"Application for {job.get('job_title', 'this position')} "
+            f"at {job.get('company', 'the company')} submitted!\n\n"
+            f"Match Score: {job.get('match_probability', 0) * 100:.1f}%"
         )
-    
-    def process_with_n8n(self, jobs):
-        """Send matching jobs to n8n for processing"""
-        if not jobs.empty:
-            n8n = N8NIntegration()
-            result = n8n.send_to_n8n(self.user_data, jobs)
-            
-            if result:
-                self.loading_label.config(
-                    text=f"Applications sent to n8n workflow successfully!",
-                    fg='#27ae60'
-                )

@@ -1,4 +1,12 @@
 import tkinter as tk
+from tkinter import messagebox
+import os
+import sys
+import pandas as pd
+
+# Add project root to Python path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
 from ui.login_page import LoginPage
 from ui.dashboard import DashboardPage
 from ui.job_matching import JobMatchingPage
@@ -6,22 +14,38 @@ from ui.job_matching import JobMatchingPage
 class MainApplication:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("Job Application System")
-        self.root.geometry("800x600")
+        self.root.title("JobMatch AI - Intelligent Job Application System")
+        self.root.geometry("900x700")
         self.root.configure(bg='#f0f0f0')
         
         # Container frame
         self.container = tk.Frame(self.root)
         self.container.pack(fill="both", expand=True)
         
-        # Dictionary to hold pages
-        self.frames = {}
-        
-        # Initialize pages
+        # Initialize variables
         self.current_user = None
         self.current_jobs = None
         
+        # Check data files
+        self.check_data_files()
+        
+        # Show login page
         self.show_login_page()
+    
+    def check_data_files(self):
+        """Check if data files exist"""
+        data_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
+        os.makedirs(data_dir, exist_ok=True)
+        
+        jobs_file = os.path.join(data_dir, 'jobs.xlsx')
+        users_file = os.path.join(data_dir, 'users.xlsx')
+        
+        if not os.path.exists(jobs_file) or not os.path.exists(users_file):
+            print("Generating datasets...")
+            from generate_datasets import generate_jobs_dataset, generate_users_dataset, generate_training_data
+            generate_jobs_dataset()
+            generate_users_dataset()
+            generate_training_data()
     
     def show_login_page(self):
         """Show Page 1 - Welcome/Login"""

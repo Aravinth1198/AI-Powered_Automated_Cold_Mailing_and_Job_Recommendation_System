@@ -1,0 +1,44 @@
+[
+  {
+    "model_name": "Random Forest",
+    "accuracy": 1.0,
+    "cv_mean": 1.0,
+    "cv_std": 0.0
+  },
+  {
+    "model_name": "K-Nearest Neighbors",
+    "accuracy": 1.0,
+    "cv_mean": 1.0,
+    "cv_std": 0.0
+  },
+  {
+    "model_name": "Decision Tree",
+    "accuracy": 1.0,
+    "cv_mean": 1.0,
+    "cv_std": 0.0
+  },
+  {
+    "model_name": "Gradient Boosting",
+    "accuracy": 1.0,
+    "cv_mean": 1.0,
+    "cv_std": 0.0
+  },
+  {
+    "model_name": "Support Vector Machine",
+    "accuracy": 0.9986111111111111,
+    "cv_mean": 0.9986111111111111,
+    "cv_std": 0.0021516574145596687
+  },
+  {
+    "model_name": "Logistic Regression",
+    "accuracy": 0.9861111111111112,
+    "cv_mean": 0.9872222222222222,
+    "cv_std": 0.005076574134026974
+  },
+  {
+    "model_name": "Naive Bayes",
+    "accuracy": 0.8194444444444444,
+    "cv_mean": 0.8002777777777779,
+    "cv_std": 0.059130792462844174
+  }
+]
