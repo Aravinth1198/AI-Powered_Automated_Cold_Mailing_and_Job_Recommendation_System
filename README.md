@@ -42,6 +42,7 @@
         ↓
    Emails sent
         ↓
+      End
 ```
 
 
