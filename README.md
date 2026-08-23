@@ -8,6 +8,16 @@
 * The proposed system uses ML-based job recommendation to identify relevant job roles from a database based on user-provided skills and qualifications.
 * It then uses n8n automation and Gemini AI to generate and send personalized cold emails to the HR contacts of all matching jobs.
   
+## 2. Objectives
+
+* Automated Job Matching: Reduce manual job search effort by 70-80%.
+* Personalized Recommendations: Provide tailored job suggestions based on skills and preferences
+* Streamlined Application Process: Automate email generation and sending
+* Data-Driven Decisions: Use ML insights for better career choices
+* Scalable Solution: Support thousands of users and job listings
+* Cost Reduction: Minimize time and resources spent on job applications
+* Improved Accuracy: Higher job-role fit compared to traditional methods
+
 
 ## 3. Proposed Solution
 
@@ -269,7 +279,9 @@ Python processing starts
 
 
 ##  15. Model Selection
+
 Algorithm Introduced
+
 *  Random Forest - Good accuracy without much tuning. Handles noise well through ensemble averaging
 *  Logistic Regression - 
 *  SVM - Poor for very large datasets. Moderate noise tolerance
@@ -277,4 +289,25 @@ Algorithm Introduced
 *  Naive Bayes - Excellent scalability. Sensitive to data distribution assumptions
 *  Decision Tree - Fast training and prediction. No ensemble averaging to reduce noise impact
 *  Gradient Boosting - Large Dataset Processing. Noisy Data Handling. Robust to Errors. High Accuracy
+
+
+## 16. Integrate ML model with Tkinter UI
+
+```text
+ Tkinter UI (inputs)
+        ↓
+ Load Saved model
+        ↓
+ Send input to model
+        ↓
+   Get prediction
+        ↓
+   Display in UI
+```
+
+
+## 17. AI-based recommendation
+
+
+
 
