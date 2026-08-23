@@ -152,13 +152,12 @@ The initial system can use:
 
 ### 8.1 Inputs
 
-* Student ID
-* Student Name
-* Attendance %
-* Study Hours
-* Internal Marks
-* Assignment Completion %
-* Previous Academic Performance
+* Applicant Name
+* Email Address
+* Profession
+* Experience
+* Preferred Domains
+* Skills
 
 ### 8.2 Processing
 
@@ -172,7 +171,6 @@ The initial system can use:
 
 * Predicted performance
 * Performance category
-* Risk level
 * Recommendation
 
 ## 9. Proposed System Architecture
@@ -201,8 +199,82 @@ Result + AI Recommendation
 * **Result + AI Recommendation** - Displays the prediction and recommend the job.
 
 
- 
+## 10. UI Design Requirements
+
+The application should contain
+
+### 10.1 Student Information Section
+
+* Email id
+* Password
+
+### 10.2 Academic Information Section
+
+* Applicant Name
+* Email Address
+* Profession
+* Experience
+* Preferred Domains
+* Skills
+
+### 10.3 Action Section
+
+* Find Matching job
+
+### 10.4 Result Section
+
+* Recommend Job
+* Apply now
+* Back
 
 
-  
+## 11. Using Frames
+
+```text
+Main Window
+│
+├── Header Frame
+│
+├── Login Page Frame
+│
+├── User Information Frame
+│
+├── Matching Job Frame
+│
+└── Result Frame
+```
+
+
+ ## 12. Workflow
+
+```text
+User clicks Find Matching Jobs
+        ↓
+Button generates event
+        ↓
+Callback function executes
+        ↓
+Python processing starts
+```
+
+
+## 13. Outcomes
+
+* Maintains a separate Dataset (xlsx file)
+* Data Preprocessing 
+* Trained ML model
+* Prediction function
+* Saved Model  file (.pkl)
+
+
+
+##  15. Model Selection
+Algorithm Introduced
+*  Random Forest - Good accuracy without much tuning. Handles noise well through ensemble averaging
+*  Logistic Regression - 
+*  SVM - Poor for very large datasets. Moderate noise tolerance
+*  KNN - No training phase, but prediction is slow. No built-in noise reduction mechanism
+*  Naive Bayes - Excellent scalability. Sensitive to data distribution assumptions
+*  Decision Tree - Fast training and prediction. No ensemble averaging to reduce noise impact
+*  Gradient Boosting - Large Dataset Processing. Noisy Data Handling. Robust to Errors. High Accuracy
 
