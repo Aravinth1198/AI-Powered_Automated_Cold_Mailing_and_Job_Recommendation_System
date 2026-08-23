@@ -139,11 +139,10 @@ The user should be able to:
 The initial system can use:
 
 * Applicant Name
-* Applicant Email
-* Applicant Phone
-* Applicant Skills
-* Applicant Education
-* Applicant Experience
+* Email
+* Skills
+* Education
+* Experience
 * Applicant Preferred Job Role
 * Applicant Preferred Location
 
