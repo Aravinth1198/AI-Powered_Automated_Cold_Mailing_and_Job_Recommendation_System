@@ -8,6 +8,7 @@ import pandas as pd
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from ui.login_page import LoginPage
+from ui.register_page import RegisterPage
 from ui.dashboard import DashboardPage
 from ui.job_matching import JobMatchingPage
 
@@ -52,7 +53,15 @@ class MainApplication:
         if hasattr(self, 'current_frame'):
             self.current_frame.destroy()
         
-        self.current_frame = LoginPage(self.container, self.on_login_success)
+        self.current_frame = LoginPage(self.container, self.on_login_success, self.show_register_page)
+        self.current_frame.pack(fill="both", expand=True)
+    
+    def show_register_page(self):
+        """Show the dedicated Create Account screen"""
+        if hasattr(self, 'current_frame'):
+            self.current_frame.destroy()
+        
+        self.current_frame = RegisterPage(self.container, self.on_register_success, self.show_login_page)
         self.current_frame.pack(fill="both", expand=True)
     
     def show_dashboard(self, user_data=None):
@@ -83,6 +92,12 @@ class MainApplication:
     
     def on_login_success(self, user_data):
         """Callback when login is successful"""
+        self.show_dashboard(user_data)
+    
+    def on_register_success(self, user_data):
+        """Callback when a new account is created — logs the user straight
+        in and takes them to their (empty) profile, instead of bouncing
+        them back to Login to type everything in again."""
         self.show_dashboard(user_data)
     
     def on_profile_complete(self, user_data):

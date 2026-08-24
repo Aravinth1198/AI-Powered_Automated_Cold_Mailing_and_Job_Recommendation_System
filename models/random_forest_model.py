@@ -176,7 +176,6 @@ class RandomForestJobMatcher:
         
         X_scaled = self.scaler.fit_transform(X)
         
-        # Train model
         self.model = RandomForestClassifier(
             n_estimators=100,
             max_depth=10,
@@ -187,9 +186,13 @@ class RandomForestJobMatcher:
             n_jobs=-1
         )
         
-        self.model.fit(X_scaled, y)
-        
-        # Evaluate
+        # BUG FIX: the old code fit the model on the FULL dataset first,
+        # then immediately overwrote self.model by re-fitting on only the
+        # 80% train split — so accuracy/f1 were reported honestly, but the
+        # model that actually got pickled and saved to disk (and later used
+        # for live predictions in the app) had only ever seen 80% of the data.
+        # Fix: evaluate on the held-out split, then do one final fit on all
+        # the data before saving, so the deployed model uses every example.
         X_train, X_test, y_train, y_test = train_test_split(
             X_scaled, y, test_size=0.2, random_state=42, stratify=y
         )
@@ -200,16 +203,19 @@ class RandomForestJobMatcher:
         accuracy = accuracy_score(y_test, y_pred)
         f1 = f1_score(y_test, y_pred, zero_division=0)
         
-        print(f"Model trained successfully!")
+        print(f"Model evaluated on held-out test set:")
         print(f"Accuracy: {accuracy:.4f}")
         print(f"F1-Score: {f1:.4f}")
         
-        # Save model
-        self.save_model()
+        # Final fit on 100% of the data for the model that actually ships
+        self.model.fit(X_scaled, y)
+        print("Final model retrained on full dataset for deployment.")
+        
+        self.save_model(accuracy=accuracy, f1=f1)
         
         return self.model, accuracy, f1
     
-    def save_model(self):
+    def save_model(self, accuracy=None, f1=None):
         """Save model and scaler to .pkl files"""
         os.makedirs(os.path.dirname(self.model_path), exist_ok=True)
         
@@ -219,11 +225,19 @@ class RandomForestJobMatcher:
         with open(self.scaler_path, 'wb') as f:
             pickle.dump(self.scaler, f)
         
+        # BUG FIX: metadata previously listed a stale/incorrect 10-item
+        # feature_columns list left over from an earlier version of this
+        # file, which no longer matched the 4 features actually produced
+        # by prepare_features()/generate_training_data(). Kept in sync now,
+        # and accuracy/f1 are recorded so job_matching.py can display them.
         metadata = {
             'model_type': 'Random Forest',
             'timestamp': datetime.now().isoformat(),
             'model_path': self.model_path,
-            'scaler_path': self.scaler_path
+            'scaler_path': self.scaler_path,
+            'feature_columns': self.feature_columns,
+            'accuracy': accuracy,
+            'f1_score': f1
         }
         
         with open(self.metadata_path, 'w') as f:

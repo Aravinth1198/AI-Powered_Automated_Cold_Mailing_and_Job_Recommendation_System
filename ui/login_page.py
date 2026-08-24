@@ -4,9 +4,16 @@ import pandas as pd
 import os
 
 class LoginPage(tk.Frame):
-    def __init__(self, parent, on_login_success):
+    def __init__(self, parent, on_login_success, on_register_click=None):
         super().__init__(parent, bg='#f0f0f0')
         self.on_login_success = on_login_success
+        # BUG FIX: registration now lives on its own screen (ui/register_page.py)
+        # instead of silently reusing these login boxes. If a caller doesn't
+        # pass on_register_click, fall back to a clear error rather than a
+        # silent no-op.
+        self.on_register_click = on_register_click or (
+            lambda: messagebox.showerror("Error", "Registration is not wired up in main.py")
+        )
         self.setup_ui()
     
     def setup_ui(self):
@@ -88,14 +95,15 @@ class LoginPage(tk.Frame):
         )
         login_button.pack(pady=20)
         
-        # New User Button
+        # New User Button — now navigates to a dedicated Register screen
+        # instead of reusing these same email/password boxes.
         new_user_button = tk.Button(
             login_frame,
             text="New User? Create Account",
             font=("Arial", 11),
             bg='#f0f0f0',
             fg='#3498db',
-            command=self.handle_new_user,
+            command=self.on_register_click,
             cursor="hand2",
             relief="flat"
         )
@@ -121,48 +129,3 @@ class LoginPage(tk.Frame):
                 return
         
         messagebox.showerror("Error", "Invalid email or password")
-    
-    def handle_new_user(self):
-        """Open registration form"""
-        self.clear_fields()
-        # Change button texts for registration
-        messagebox.showinfo("Registration", "Please enter your email and password to register")
-        
-        # Here you would implement registration logic
-        # For simplicity, we'll just collect email and password
-        email = self.email_entry.get().strip()
-        password = self.password_entry.get()
-        
-        if email and password:
-            self.save_new_user(email, password)
-    
-    def save_new_user(self, email, password):
-        """Save new user to Excel"""
-        users_file = 'data/users.xlsx'
-        
-        new_user = pd.DataFrame({
-            'email': [email],
-            'password': [password],
-            'first_name': [''],
-            'last_name': [''],
-            'profession': [''],
-            'experience': [0],
-            'preferred_domain_1': [''],
-            'preferred_domain_2': [''],
-            'preferred_domain_3': [''],
-            'skills': ['']
-        })
-        
-        if os.path.exists(users_file):
-            df = pd.read_excel(users_file)
-            df = pd.concat([df, new_user], ignore_index=True)
-        else:
-            os.makedirs('data', exist_ok=True)
-            df = new_user
-        
-        df.to_excel(users_file, index=False)
-        messagebox.showinfo("Success", "Account created! Please login now.")
-    
-    def clear_fields(self):
-        self.email_entry.delete(0, tk.END)
-        self.password_entry.delete(0, tk.END)

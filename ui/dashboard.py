@@ -17,7 +17,7 @@ class DashboardPage(tk.Frame):
     
     def check_profile_complete(self):
         """Check if user profile has all required fields"""
-        required_fields = ['first_name', 'last_name', 'profession', 'skills']
+        required_fields = ['first_name', 'last_name', 'profession', 'skills', 'location']
         
         for field in required_fields:
             value = self.user_data.get(field, '')
@@ -244,6 +244,41 @@ class DashboardPage(tk.Frame):
         self.skills_text = tk.Text(scrollable_frame, height=5, width=40, font=("Arial", 11))
         self.skills_text.pack(pady=5)
         
+        # Location — needed on the resume header
+        tk.Label(scrollable_frame, text="Location (City, State):", bg='#f0f0f0', font=("Arial", 11)).pack(anchor="w", pady=5)
+        self.location_entry = tk.Entry(scrollable_frame, font=("Arial", 11), width=40)
+        self.location_entry.pack(pady=5)
+        
+        # Education — one line per entry, feeds the resume's Education section
+        tk.Label(scrollable_frame, text="Education (one per line):", bg='#f0f0f0', font=("Arial", 11)).pack(anchor="w", pady=5)
+        tk.Label(
+            scrollable_frame,
+            text="Format: Institution ; Location ; Degree ; Start - End",
+            bg='#f0f0f0', fg='#7f8c8d', font=("Arial", 9)
+        ).pack(anchor="w")
+        self.education_text = tk.Text(scrollable_frame, height=3, width=60, font=("Arial", 10))
+        self.education_text.pack(pady=5)
+        
+        # Work experience — one line per entry, feeds the resume's Experience section
+        tk.Label(scrollable_frame, text="Work Experience (one per line):", bg='#f0f0f0', font=("Arial", 11)).pack(anchor="w", pady=5)
+        tk.Label(
+            scrollable_frame,
+            text="Format: Company ; Location ; Role ; Start - End ; bullet one | bullet two",
+            bg='#f0f0f0', fg='#7f8c8d', font=("Arial", 9)
+        ).pack(anchor="w")
+        self.work_experience_text = tk.Text(scrollable_frame, height=4, width=60, font=("Arial", 10))
+        self.work_experience_text.pack(pady=5)
+        
+        # Projects — one line per entry, feeds the resume's Projects section
+        tk.Label(scrollable_frame, text="Projects (one per line):", bg='#f0f0f0', font=("Arial", 11)).pack(anchor="w", pady=5)
+        tk.Label(
+            scrollable_frame,
+            text="Format: Project Title ; Tech Stack (comma-separated) ; Start - End ; bullet one | bullet two",
+            bg='#f0f0f0', fg='#7f8c8d', font=("Arial", 9)
+        ).pack(anchor="w")
+        self.projects_text = tk.Text(scrollable_frame, height=4, width=60, font=("Arial", 10))
+        self.projects_text.pack(pady=5)
+        
         # Save button - FIX: Use lambda to pass user_data
         save_btn = tk.Button(
             scrollable_frame,
@@ -279,8 +314,16 @@ class DashboardPage(tk.Frame):
         domain3 = self.domain3_entry.get().strip()
         skills = self.skills_text.get("1.0", tk.END).strip()
         
-        if not all([first_name, last_name, domain1, domain2, domain3, skills]):
-            messagebox.showerror("Error", "Please fill in all fields")
+        # NEW: resume fields — location is required, the multi-line boxes
+        # (education/work experience/projects) are optional so a Student
+        # profile with no job history yet can still save.
+        location = self.location_entry.get().strip()
+        education_raw = self.education_text.get("1.0", tk.END).strip()
+        work_experience_raw = self.work_experience_text.get("1.0", tk.END).strip()
+        projects_raw = self.projects_text.get("1.0", tk.END).strip()
+        
+        if not all([first_name, last_name, domain1, domain2, domain3, skills, location]):
+            messagebox.showerror("Error", "Please fill in all fields, including Location")
             return
         
         # Update user data
@@ -292,10 +335,21 @@ class DashboardPage(tk.Frame):
         self.user_data['preferred_domain_2'] = domain2
         self.user_data['preferred_domain_3'] = domain3
         self.user_data['skills'] = skills
+        self.user_data['location'] = location
+        self.user_data['education_raw'] = education_raw
+        self.user_data['work_experience_raw'] = work_experience_raw
+        self.user_data['projects_raw'] = projects_raw
         
         # Save to Excel
         users_file = 'data/users.xlsx'
         df = pd.read_excel(users_file)
+        
+        # BUG FIX / SCHEMA UPGRADE: older users.xlsx files won't have these
+        # columns yet. Add them if missing so .loc[] assignment below doesn't
+        # raise a KeyError on a file generated before this change.
+        for col in ['location', 'education_raw', 'work_experience_raw', 'projects_raw']:
+            if col not in df.columns:
+                df[col] = ''
         
         # Update the specific user
         email = self.user_data['email']
@@ -307,6 +361,10 @@ class DashboardPage(tk.Frame):
         df.loc[df['email'] == email, 'preferred_domain_2'] = domain2
         df.loc[df['email'] == email, 'preferred_domain_3'] = domain3
         df.loc[df['email'] == email, 'skills'] = skills
+        df.loc[df['email'] == email, 'location'] = location
+        df.loc[df['email'] == email, 'education_raw'] = education_raw
+        df.loc[df['email'] == email, 'work_experience_raw'] = work_experience_raw
+        df.loc[df['email'] == email, 'projects_raw'] = projects_raw
         
         df.to_excel(users_file, index=False)
         

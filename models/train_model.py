@@ -83,7 +83,9 @@ def test_model_prediction():
         for i, (_, job) in enumerate(matching_jobs.head(5).iterrows(), 1):
             print(f"\n{i}. {job['job_title']} at {job['company']}")
             print(f"   Domain: {job['domain']}")
-            print(f"   Match Score: {job['match_score']:.2f}%")
+            # BUG FIX: predict_jobs() sets 'match_percentage', not 'match_score'.
+            # The old key name here raised a KeyError every time this test ran.
+            print(f"   Match Score: {job['match_percentage']:.2f}%")
     
     return matching_jobs
 

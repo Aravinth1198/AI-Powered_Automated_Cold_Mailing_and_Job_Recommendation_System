@@ -239,7 +239,22 @@ def generate_users_dataset():
             'preferred_domain_1': 'Software Development',
             'preferred_domain_2': 'Cloud Computing',
             'preferred_domain_3': 'DevOps',
-            'skills': 'Python, Java, SQL, AWS, Docker, Kubernetes, Git, REST APIs'
+            'skills': 'Python, Java, SQL, AWS, Docker, Kubernetes, Git, REST APIs',
+            # NEW: resume fields (see utils/resume_data.py for the format)
+            'location': 'Austin, TX',
+            'education_raw': 'University of Texas ; Austin, TX ; B.S. in Computer Science ; Aug 2015 - May 2019',
+            'work_experience_raw': (
+                'TechCorp ; Austin, TX ; Senior Software Engineer ; Jan 2022 - Present ; '
+                'Led migration of monolith to microservices on AWS EKS | '
+                'Reduced API latency 40% by introducing Redis caching layer\n'
+                'CodeWorks ; Remote ; Software Engineer ; Jun 2019 - Dec 2021 ; '
+                'Built REST APIs serving 2M+ daily requests with Django and PostgreSQL'
+            ),
+            'projects_raw': (
+                'Job Match AI ; Python, scikit-learn, Tkinter, n8n, Gemini ; 2026 ; '
+                'Built a Random Forest job-matching engine with automated HR outreach | '
+                'Reduced manual job application time by an estimated 80%'
+            )
         },
         {
             'email': 'jane.smith@example.com',
@@ -377,6 +392,15 @@ def generate_users_dataset():
     
     # Create DataFrame
     users_df = pd.DataFrame(users)
+    
+    # NEW: make sure every resume column exists even for demo users that
+    # didn't get sample data above, so downstream code (n8n_connection.py)
+    # never hits a KeyError on a missing column.
+    for col in ['location', 'education_raw', 'work_experience_raw', 'projects_raw']:
+        if col not in users_df.columns:
+            users_df[col] = ''
+        else:
+            users_df[col] = users_df[col].fillna('')
     
     # Save to Excel
     os.makedirs('data', exist_ok=True)

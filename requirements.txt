@@ -3,5 +3,13 @@ numpy
 scikit-learn
 openpyxl
 requests
-tkinter
 joblib
+
+# NOTE: tkinter was removed from this file — it is part of the Python
+# standard library and is NOT installable via pip. "pip install tkinter"
+# fails on every platform. If `python -c "import tkinter"` fails for you:
+#   Windows/Mac (python.org installer): already included, reinstall Python
+#     and make sure "tcl/tk" is checked.
+#   Ubuntu/Debian: sudo apt-get install python3-tk
+#   Fedora:        sudo dnf install python3-tkinter
+#   macOS (Homebrew python): brew install python-tk

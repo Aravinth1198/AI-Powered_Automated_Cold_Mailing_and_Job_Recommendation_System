@@ -1,18 +1,14 @@
 {
   "model_type": "Random Forest",
-  "timestamp": "2026-08-22T12:17:53.378772",
+  "timestamp": "2026-08-23T18:22:38.317170",
+  "model_path": "models/saved/random_forest_model.pkl",
+  "scaler_path": "models/saved/scaler.pkl",
   "feature_columns": [
-    "skill_match_score",
+    "match_percentage",
     "domain_match",
     "profession_match",
-    "experience_match",
-    "num_user_skills",
-    "num_job_skills",
-    "skill_domain_interaction",
-    "skill_experience_interaction",
-    "avg_skill_length",
-    "domain_similarity_score"
+    "experience_match"
   ],
-  "model_path": "models/saved/random_forest_model.pkl",
-  "scaler_path": "models/saved/scaler.pkl"
+  "accuracy": 1.0,
+  "f1_score": 1.0
 }

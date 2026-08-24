@@ -8,16 +8,6 @@
 * The proposed system uses ML-based job recommendation to identify relevant job roles from a database based on user-provided skills and qualifications.
 * It then uses n8n automation and Gemini AI to generate and send personalized cold emails to the HR contacts of all matching jobs.
   
-## 2. Objectives
-
-* Automated Job Matching: Reduce manual job search effort by 70-80%.
-* Personalized Recommendations: Provide tailored job suggestions based on skills and preferences
-* Streamlined Application Process: Automate email generation and sending
-* Data-Driven Decisions: Use ML insights for better career choices
-* Scalable Solution: Support thousands of users and job listings
-* Cost Reduction: Minimize time and resources spent on job applications
-* Improved Accuracy: Higher job-role fit compared to traditional methods
-
 
 ## 3. Proposed Solution
 
@@ -52,7 +42,6 @@
         ↓
    Emails sent
         ↓
-      End
 ```
 
 
@@ -139,10 +128,11 @@ The user should be able to:
 The initial system can use:
 
 * Applicant Name
-* Email
-* Skills
-* Education
-* Experience
+* Applicant Email
+* Applicant Phone
+* Applicant Skills
+* Applicant Education
+* Applicant Experience
 * Applicant Preferred Job Role
 * Applicant Preferred Location
 
@@ -161,12 +151,13 @@ The initial system can use:
 
 ### 8.1 Inputs
 
-* Applicant Name
-* Email Address
-* Profession
-* Experience
-* Preferred Domains
-* Skills
+* Student ID
+* Student Name
+* Attendance %
+* Study Hours
+* Internal Marks
+* Assignment Completion %
+* Previous Academic Performance
 
 ### 8.2 Processing
 
@@ -180,6 +171,7 @@ The initial system can use:
 
 * Predicted performance
 * Performance category
+* Risk level
 * Recommendation
 
 ## 9. Proposed System Architecture
@@ -208,105 +200,8 @@ Result + AI Recommendation
 * **Result + AI Recommendation** - Displays the prediction and recommend the job.
 
 
-## 10. UI Design Requirements
-
-The application should contain
-
-### 10.1 Student Information Section
-
-* Email id
-* Password
-
-### 10.2 Academic Information Section
-
-* Applicant Name
-* Email Address
-* Profession
-* Experience
-* Preferred Domains
-* Skills
-
-### 10.3 Action Section
-
-* Find Matching job
-
-### 10.4 Result Section
-
-* Recommend Job
-* Apply now
-* Back
+ 
 
 
-## 11. Using Frames
-
-```text
-Main Window
-│
-├── Header Frame
-│
-├── Login Page Frame
-│
-├── User Information Frame
-│
-├── Matching Job Frame
-│
-└── Result Frame
-```
-
-
- ## 12. Workflow
-
-```text
-User clicks Find Matching Jobs
-        ↓
-Button generates event
-        ↓
-Callback function executes
-        ↓
-Python processing starts
-```
-
-
-## 13. Outcomes
-
-* Maintains a separate Dataset (xlsx file)
-* Data Preprocessing 
-* Trained ML model
-* Prediction function
-* Saved Model  file (.pkl)
-
-
-
-##  15. Model Selection
-
-Algorithm Introduced
-
-*  Random Forest - Good accuracy without much tuning. Handles noise well through ensemble averaging
-*  Logistic Regression - 
-*  SVM - Poor for very large datasets. Moderate noise tolerance
-*  KNN - No training phase, but prediction is slow. No built-in noise reduction mechanism
-*  Naive Bayes - Excellent scalability. Sensitive to data distribution assumptions
-*  Decision Tree - Fast training and prediction. No ensemble averaging to reduce noise impact
-*  Gradient Boosting - Large Dataset Processing. Noisy Data Handling. Robust to Errors. High Accuracy
-
-
-## 16. Integrate ML model with Tkinter UI
-
-```text
- Tkinter UI (inputs)
-        ↓
- Load Saved model
-        ↓
- Send input to model
-        ↓
-   Get prediction
-        ↓
-   Display in UI
-```
-
-
-## 17. AI-based recommendation
-
-
-
+  
 
