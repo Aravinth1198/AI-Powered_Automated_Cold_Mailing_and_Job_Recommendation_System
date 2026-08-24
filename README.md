@@ -8,8 +8,18 @@
 * The proposed system uses ML-based job recommendation to identify relevant job roles from a database based on user-provided skills and qualifications.
 * It then uses n8n automation and Gemini AI to generate and send personalized cold emails to the HR contacts of all matching jobs.
   
+## 2. Objectives
 
-## 2. Proposed Solution
+* Automated Job Matching: Reduce manual job search effort by 70-80%.
+* Personalized Recommendations: Provide tailored job suggestions based on skills and preferences
+* Streamlined Application Process: Automate email generation and sending
+* Data-Driven Decisions: Use ML insights for better career choices
+* Scalable Solution: Support thousands of users and job listings
+* Cost Reduction: Minimize time and resources spent on job applications
+* Improved Accuracy: Higher job-role fit compared to traditional methods
+
+
+## 3. Proposed Solution
 
 * Collect user information such as skills, education, experience, and preferred job role.
 * Validate and process the entered user data.
@@ -21,7 +31,7 @@
 * Display job recommendations and mailing status through a user-friendly Tkinter interface.
 
 
-## 3. Process Flow
+## 4. Process Flow
 
 ```text
      Start
@@ -42,10 +52,11 @@
         ↓
    Emails sent
         ↓
+      End
 ```
 
 
-## 4. Project Mapping
+## 5. Project Mapping
 
 | V-Model Stage        |        Auotomatic Job Recommendation Project           |
 | -------------------- | -----------------------------------------------------  |
@@ -60,7 +71,7 @@
 | Demonstration        | Verify that the system satisfies project objectives    |
 
 
-## 5. Project - Modular Application Development
+## 6. Project - Modular Application Development
 
 Create separate functions:
 
@@ -73,9 +84,9 @@ recommend_job()
 ```
 
 
-## 6. Requirement Analysis
+## 7. Requirement Analysis
 
-### 6.1 Functional Requirements
+### 7.1 Functional Requirements
 
 The system should:
 *  User information input through Tkinter
@@ -99,7 +110,7 @@ The system should:
 *	 Display recommended jobs
 *	 Display final mailing summary
 
-### 6.2 Non-Functional Requirements
+### 7.2 Non-Functional Requirements
 
 The application should be:
 
@@ -112,7 +123,7 @@ The application should be:
 * Secure with respect to applicant data
 * Easy to test
 
-### 6.3 User Requirement
+### 7.3 User Requirement
 
 The user should be able to:
 
@@ -123,20 +134,19 @@ The user should be able to:
 * Select the job for applicant.
 * Send mail to the recruiter.
 
-### 6.4 Identify System Inputs
+### 7.4 Identify System Inputs
 
 The initial system can use:
 
 * Applicant Name
-* Applicant Email
-* Applicant Phone
-* Applicant Skills
-* Applicant Education
-* Applicant Experience
+* Email
+* Skills
+* Education
+* Experience
 * Applicant Preferred Job Role
 * Applicant Preferred Location
 
-### 6.5 System Output
+### 7.5 System Output
 
 * Input Validation Output
 * Job Recommendation Output
@@ -147,35 +157,32 @@ The initial system can use:
 * Email Sending Output
 
 
-## 7. From Requirements to System Design
+## 8. From Requirements to System Design
 
-### 7.1 Inputs
+### 8.1 Inputs
 
-* User name
-* User mail id
-* login password
-* Location
+* Applicant Name
+* Email Address
+* Profession
 * Experience
+* Preferred Domains
 * Skills
-* Projects
-* Location
-* Education Details
 
-### 7.2 Processing
+### 8.2 Processing
 
 * Validate input
 * Preprocess data
 * Send data to ML model
 * Generate prediction
 * Generate recommendation
-* Generate a content using Gemini
-* Automate mail agent
 
-### 7.3 Outputs
+### 8.3 Outputs
 
-* Display Recommended Jobs
+* Predicted performance
+* Performance category
+* Recommendation
 
-## 8. Proposed System Architecture
+## 9. Proposed System Architecture
 
 ```text
 Tkinter UI
@@ -201,8 +208,106 @@ Result + AI Recommendation
 * **Result + AI Recommendation** - Displays the prediction and recommend the job.
 
 
- 
+## 10. UI Design Requirements
+
+The application should contain
+
+### 10.1 Student Information Section
+
+* Email id
+* Password
+
+### 10.2 Academic Information Section
+
+* Applicant Name
+* Email Address
+* Profession
+* Experience
+* Preferred Domains
+* Skills
+
+### 10.3 Action Section
+
+* Find Matching job
+
+### 10.4 Result Section
+
+* Recommend Job
+* Apply now
+* Back
 
 
-  
+## 11. Using Frames
+
+```text
+Main Window
+│
+├── Header Frame
+│
+├── Login Page Frame
+│
+├── User Information Frame
+│
+├── Matching Job Frame
+│
+└── Result Frame
+```
+
+
+ ## 12. Workflow
+
+```text
+User clicks Find Matching Jobs
+        ↓
+Button generates event
+        ↓
+Callback function executes
+        ↓
+Python processing starts
+```
+
+
+## 13. Outcomes
+
+* Maintains a separate Dataset (xlsx file)
+* Data Preprocessing 
+* Trained ML model
+* Prediction function
+* Saved Model  file (.pkl)
+
+
+
+##  15. Model Selection
+
+Algorithm Introduced
+
+*  Random Forest - Good accuracy without much tuning. Handles noise well through ensemble averaging
+*  Logistic Regression - 
+*  SVM - Poor for very large datasets. Moderate noise tolerance
+*  KNN - No training phase, but prediction is slow. No built-in noise reduction mechanism
+*  Naive Bayes - Excellent scalability. Sensitive to data distribution assumptions
+*  Decision Tree - Fast training and prediction. No ensemble averaging to reduce noise impact
+*  Gradient Boosting - Large Dataset Processing. Noisy Data Handling. Robust to Errors. High Accuracy
+
+
+## 16. Integrate ML model with Tkinter UI
+
+```text
+ Tkinter UI (inputs)
+        ↓
+ Load Saved model
+        ↓
+ Send input to model
+        ↓
+   Get prediction
+        ↓
+   Display in UI
+```
+
+
+## 17. AI-based recommendation
+
+Generates body for the mail and prepares a resume pdf 
+
+
 
