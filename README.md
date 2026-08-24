@@ -9,7 +9,7 @@
 * It then uses n8n automation and Gemini AI to generate and send personalized cold emails to the HR contacts of all matching jobs.
   
 
-## 3. Proposed Solution
+## 2. Proposed Solution
 
 * Collect user information such as skills, education, experience, and preferred job role.
 * Validate and process the entered user data.
@@ -21,7 +21,7 @@
 * Display job recommendations and mailing status through a user-friendly Tkinter interface.
 
 
-## 4. Process Flow
+## 3. Process Flow
 
 ```text
      Start
@@ -45,7 +45,7 @@
 ```
 
 
-## 5. Project Mapping
+## 4. Project Mapping
 
 | V-Model Stage        |        Auotomatic Job Recommendation Project           |
 | -------------------- | -----------------------------------------------------  |
@@ -60,7 +60,7 @@
 | Demonstration        | Verify that the system satisfies project objectives    |
 
 
-## 6. Project - Modular Application Development
+## 5. Project - Modular Application Development
 
 Create separate functions:
 
@@ -73,9 +73,9 @@ recommend_job()
 ```
 
 
-## 7. Requirement Analysis
+## 6. Requirement Analysis
 
-### 7.1 Functional Requirements
+### 6.1 Functional Requirements
 
 The system should:
 *  User information input through Tkinter
@@ -99,7 +99,7 @@ The system should:
 *	 Display recommended jobs
 *	 Display final mailing summary
 
-### 7.2 Non-Functional Requirements
+### 6.2 Non-Functional Requirements
 
 The application should be:
 
@@ -112,7 +112,7 @@ The application should be:
 * Secure with respect to applicant data
 * Easy to test
 
-### 7.3 User Requirement
+### 6.3 User Requirement
 
 The user should be able to:
 
@@ -123,7 +123,7 @@ The user should be able to:
 * Select the job for applicant.
 * Send mail to the recruiter.
 
-### 7.4 Identify System Inputs
+### 6.4 Identify System Inputs
 
 The initial system can use:
 
@@ -136,7 +136,7 @@ The initial system can use:
 * Applicant Preferred Job Role
 * Applicant Preferred Location
 
-### 7.5 System Output
+### 6.5 System Output
 
 * Input Validation Output
 * Job Recommendation Output
@@ -147,34 +147,35 @@ The initial system can use:
 * Email Sending Output
 
 
-## 8. From Requirements to System Design
+## 7. From Requirements to System Design
 
-### 8.1 Inputs
+### 7.1 Inputs
 
-* Student ID
-* Student Name
-* Attendance %
-* Study Hours
-* Internal Marks
-* Assignment Completion %
-* Previous Academic Performance
+* User name
+* User mail id
+* login password
+* Location
+* Experience
+* Skills
+* Projects
+* Location
+* Education Details
 
-### 8.2 Processing
+### 7.2 Processing
 
 * Validate input
 * Preprocess data
 * Send data to ML model
 * Generate prediction
 * Generate recommendation
+* Generate a content using Gemini
+* Automate mail agent
 
-### 8.3 Outputs
+### 7.3 Outputs
 
-* Predicted performance
-* Performance category
-* Risk level
-* Recommendation
+* Display Recommended Jobs
 
-## 9. Proposed System Architecture
+## 8. Proposed System Architecture
 
 ```text
 Tkinter UI
